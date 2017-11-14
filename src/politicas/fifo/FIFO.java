@@ -33,7 +33,7 @@ public class FIFO extends PoliticaDeSubstituicao {
     @Override
     public void inicializarMemoriaGlobal() {
         for (Map.Entry<String, Integer> m : getEntrada().getLsDePaginas().entrySet()) {
-            Queue<ProcessoFIFO> quadros = new LinkedList<>();
+            Queue<Processo> quadros = new LinkedList<>();
             String processo = m.getKey();
             memoria.put(processo, quadros);
         }
@@ -48,18 +48,18 @@ public class FIFO extends PoliticaDeSubstituicao {
     public void alocIgualSubsLocal() {
         Integer quadrosPorProcesso = getTamPorAlocIgual();
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            Queue<Integer> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            Queue<Integer> filaDePaginas = memoria.get(processo.getProcesso());
 
-            if (filaDePaginas.contains(p.getPagina())) {
+            if (filaDePaginas.contains(processo.getPagina())) {
                 setQtdDeHits(getQtdDeHits() + 1);
 
             } else if (filaDePaginas.size() == quadrosPorProcesso) {
                 filaDePaginas.remove();
-                filaDePaginas.add(p.getPagina());
+                filaDePaginas.add(processo.getPagina());
 
             } else {
-                filaDePaginas.add(p.getPagina());
+                filaDePaginas.add(processo.getPagina());
             }
         }
         setTaxaDeErrosNoArquivo();
@@ -68,27 +68,27 @@ public class FIFO extends PoliticaDeSubstituicao {
     @Override
     public void alocIgualSubsGlobal() {
         Integer quadrosPorProcesso = getTamPorAlocIgual();
-        Queue<ProcessoFIFO> historicoDeEntradas = new LinkedList<>();
+        Queue<Processo> historicoDeEntradas = new LinkedList<>();
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            Queue<ProcessoFIFO> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            Queue<Processo> filaDePaginas = memoria.get(processo.getProcesso());
 
-            if (historicoDeEntradas.contains(new ProcessoFIFO(p))) {
+            if (historicoDeEntradas.contains(processo)) {
                 setQtdDeHits(getQtdDeHits() + 1);
 
             } else if (filaDePaginas.size() <= quadrosPorProcesso - 1) {
-                ProcessoFIFO procFifo = new ProcessoFIFO(p, p.getProcesso());
-                historicoDeEntradas.add(procFifo);
-                filaDePaginas.add(procFifo);
+                processo.setLocalNaMemoria(processo.getProcesso());
+                historicoDeEntradas.add(processo);
+                filaDePaginas.add(processo);
 
             } else if (historicoDeEntradas.size() == getEntrada().getQtdDeQuadros()) {
-                ProcessoFIFO procRemovido = historicoDeEntradas.remove();
-                Queue<ProcessoFIFO> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
+                Processo procRemovido = historicoDeEntradas.remove();
+                Queue<Processo> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
                 filaDoProcessoRemovido.remove();
 
-                ProcessoFIFO procAdicionado = new ProcessoFIFO(p, procRemovido.getLocalNaMemoria());
-                historicoDeEntradas.add(procAdicionado);
-                filaDoProcessoRemovido.add(procAdicionado);
+                processo.setLocalNaMemoria(procRemovido.getLocalNaMemoria());
+                historicoDeEntradas.add(processo);
+                filaDoProcessoRemovido.add(processo);
 
             } else {
                 Boolean adicionado = false;
@@ -97,9 +97,9 @@ public class FIFO extends PoliticaDeSubstituicao {
                 while (mapIterator.hasNext() && !adicionado) {
                     Map.Entry<String, Queue> m = mapIterator.next();
                     if (m.getValue().size() < quadrosPorProcesso) {
-                        ProcessoFIFO procAdicionado = new ProcessoFIFO(p, m.getKey());
-                        historicoDeEntradas.add(procAdicionado);
-                        m.getValue().add(procAdicionado);
+                        processo.setLocalNaMemoria(m.getKey());
+                        historicoDeEntradas.add(processo);
+                        m.getValue().add(processo);
                         adicionado = true;
                     }
                 }
@@ -113,18 +113,18 @@ public class FIFO extends PoliticaDeSubstituicao {
     public void alocProporcionalSubsLocal() {
         criarTabelaAlocProporcional();
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            Queue<Integer> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            Queue<Integer> filaDePaginas = memoria.get(processo.getProcesso());
 
-            if (filaDePaginas.contains(p.getPagina())) {
+            if (filaDePaginas.contains(processo.getPagina())) {
                 setQtdDeHits(getQtdDeHits() + 1);
 
-            } else if (filaDePaginas.size() == getQtdDeQuadrosProporcional().get(p.getProcesso())) {
+            } else if (filaDePaginas.size() == getQtdDeQuadrosProporcional().get(processo.getProcesso())) {
                 filaDePaginas.remove();
-                filaDePaginas.add(p.getPagina());
+                filaDePaginas.add(processo.getPagina());
 
             } else {
-                filaDePaginas.add(p.getPagina());
+                filaDePaginas.add(processo.getPagina());
             }
 
         }
@@ -134,28 +134,28 @@ public class FIFO extends PoliticaDeSubstituicao {
     @Override
     public void alocProporcionalSubsGlobal() {
         criarTabelaAlocProporcional();
-        Queue<ProcessoFIFO> historicoDeEntradas = new LinkedList<>();
+        Queue<Processo> historicoDeEntradas = new LinkedList<>();
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
 
-            Queue<ProcessoFIFO> filaDePaginas = memoria.get(p.getProcesso());
+            Queue<Processo> filaDePaginas = memoria.get(processo.getProcesso());
 
-            if (historicoDeEntradas.contains(new ProcessoFIFO(p))) {
+            if (historicoDeEntradas.contains(processo)) {
                 setQtdDeHits(getQtdDeHits() + 1);
 
-            } else if (filaDePaginas.size() <= getQtdDeQuadrosProporcional().get(p.getProcesso()) - 1) {
-                ProcessoFIFO procFifo = new ProcessoFIFO(p, p.getProcesso());
-                historicoDeEntradas.add(procFifo);
-                filaDePaginas.add(procFifo);
+            } else if (filaDePaginas.size() <= getQtdDeQuadrosProporcional().get(processo.getProcesso()) - 1) {
+                processo.setLocalNaMemoria(processo.getProcesso());
+                historicoDeEntradas.add(processo);
+                filaDePaginas.add(processo);
 
             } else if (historicoDeEntradas.size() == getQtdDeQuadrosProporcional().get("Total")) {
-                ProcessoFIFO procRemovido = historicoDeEntradas.remove();
-                Queue<ProcessoFIFO> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
+                Processo procRemovido = historicoDeEntradas.remove();
+                Queue<Processo> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
                 filaDoProcessoRemovido.remove();
 
-                ProcessoFIFO procAdicionado = new ProcessoFIFO(p, procRemovido.getLocalNaMemoria());
-                historicoDeEntradas.add(procAdicionado);
-                filaDoProcessoRemovido.add(procAdicionado);
+                processo.setLocalNaMemoria(procRemovido.getLocalNaMemoria());
+                historicoDeEntradas.add(processo);
+                filaDoProcessoRemovido.add(processo);
 
             } else {
                 Boolean adicionado = false;
@@ -163,10 +163,10 @@ public class FIFO extends PoliticaDeSubstituicao {
 
                 while (mapIterator.hasNext() && !adicionado) {
                     Map.Entry<String, Queue> m = mapIterator.next();
-                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(p.getProcesso())) {
-                        ProcessoFIFO procAdicionado = new ProcessoFIFO(p, m.getKey());
-                        historicoDeEntradas.add(procAdicionado);
-                        m.getValue().add(procAdicionado);
+                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(processo.getProcesso())) {
+                        processo.setLocalNaMemoria(m.getKey());
+                        historicoDeEntradas.add(processo);
+                        m.getValue().add(processo);
                         adicionado = true;
                     }
                 }

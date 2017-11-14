@@ -3,10 +3,12 @@ package politicas;
 public class Processo {
 
     private String processo;
+    private String localNaMemoria;
     private Integer pagina;
 
     public Processo(String processo, Integer pagina) {
         this.processo = processo;
+        this.localNaMemoria = "";
         this.pagina = pagina;
     }
 
@@ -42,6 +44,14 @@ public class Processo {
 
     public void setProcesso(String processo) {
         this.processo = processo;
+    }
+
+    public String getLocalNaMemoria() {
+        return localNaMemoria;
+    }
+
+    public void setLocalNaMemoria(String localNaMemoria) {
+        this.localNaMemoria = localNaMemoria;
     }
 
     public Integer getPagina() {

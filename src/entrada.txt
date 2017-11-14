@@ -1,10 +1,10 @@
-Tamanho(quadros)=6
+﻿Tamanho(quadros)=6
 Processos(páginas):
 P1=6
 P2=5
 P3=6;
-Alocação=Proporcional
-Substituição=Local
+Alocação=Igual
+Substituição=Global
 Sequência:
 P1,1
 P1,2
