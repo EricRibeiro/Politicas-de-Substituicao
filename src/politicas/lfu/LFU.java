@@ -219,13 +219,4 @@ public class LFU extends PoliticaDeSubstituicao {
         }
         setTaxaDeErrosNoArquivo();
     }
-
-    @Override
-    public void setTaxaDeErrosNoArquivo() {
-        Integer qtdDeRequisicoes = getSaida().getQtdDeRequisicoes();
-        Integer qtdDeMisses = qtdDeRequisicoes - getQtdDeHits();
-        Double txDeErros = (double) qtdDeMisses / (double) qtdDeRequisicoes;
-        String txDeErrosFormatado = String.format("%.2f", txDeErros);
-        getSaida().getTxDeErros().put("LFU", new Double(txDeErrosFormatado));
-    }
 }

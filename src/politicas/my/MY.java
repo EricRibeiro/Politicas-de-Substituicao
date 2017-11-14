@@ -176,18 +176,8 @@ public class MY extends PoliticaDeSubstituicao {
         setTaxaDeErrosNoArquivo();
     }
 
-    @Override
-    public void setTaxaDeErrosNoArquivo() {
-        Integer qtdDeRequisicoes = getSaida().getQtdDeRequisicoes();
-        Integer qtdDeMisses = qtdDeRequisicoes - getQtdDeHits();
-        Double txDeErros = (double) qtdDeMisses / (double) qtdDeRequisicoes;
-        String txDeErrosFormatado = String.format("%.2f", txDeErros);
-        getSaida().getTxDeErros().put("MY", new Double(txDeErrosFormatado));
-    }
-
     private int getIndexAleatorio(int limite) {
         Integer min = 0;
         return ThreadLocalRandom.current().nextInt(min, limite + 1);
     }
-
 }

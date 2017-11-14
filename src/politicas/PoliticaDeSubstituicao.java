@@ -44,7 +44,13 @@ public abstract class PoliticaDeSubstituicao {
 
     public abstract void alocProporcionalSubsGlobal();
 
-    public abstract void setTaxaDeErrosNoArquivo();
+    public void setTaxaDeErrosNoArquivo() {
+        Integer qtdDeRequisicoes = getSaida().getQtdDeRequisicoes();
+        Integer qtdDeMisses = qtdDeRequisicoes - getQtdDeHits();
+        Double txDeErros = (double) qtdDeMisses / (double) qtdDeRequisicoes;
+        txDeErros = Math.floor(txDeErros * 100) / 100;
+        getSaida().getTxDeErros().put(this.getClass().getSimpleName(), txDeErros);
+    }
 
     public Integer getTamPorAlocProporcional(Integer qtdDePaginasDoProcesso) {
         Double a = (double) qtdDePaginasDoProcesso / entrada.getQtdTotalDePaginas();
