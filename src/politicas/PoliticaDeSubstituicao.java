@@ -3,6 +3,7 @@ package politicas;
 import arquivo.Entrada;
 import arquivo.Saida;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,8 +49,8 @@ public abstract class PoliticaDeSubstituicao {
         Integer qtdDeRequisicoes = getSaida().getQtdDeRequisicoes();
         Integer qtdDeMisses = qtdDeRequisicoes - getQtdDeHits();
         Double txDeErros = (double) qtdDeMisses / (double) qtdDeRequisicoes;
-        txDeErros = Math.floor(txDeErros * 100) / 100;
-        getSaida().getTxDeErros().put(this.getClass().getSimpleName(), txDeErros);
+        String txDeErrosFormatado = new DecimalFormat("#.##").format(txDeErros);
+        getSaida().getTxDeErros().put(this.getClass().getSimpleName(), txDeErrosFormatado);
     }
 
     public Integer getTamPorAlocProporcional(Integer qtdDePaginasDoProcesso) {

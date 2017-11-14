@@ -6,9 +6,9 @@ import java.util.TreeMap;
 public class Saida {
 
     private Integer qtdDeRequisicoes;
-    Map<String, Double> txDeErros;
+    Map<String, String> txDeErros;
 
-    public Saida(Integer qtdDeRequisicoes, Map<String, Double> txDeErros) {
+    public Saida(Integer qtdDeRequisicoes, Map<String, String> txDeErros) {
         this.qtdDeRequisicoes = qtdDeRequisicoes;
         this.txDeErros = txDeErros;
     }
@@ -26,11 +26,11 @@ public class Saida {
         this.qtdDeRequisicoes = qtdDeRequisicoes;
     }
 
-    public Map<String, Double> getTxDeErros() {
+    public Map<String, String> getTxDeErros() {
         return txDeErros;
     }
 
-    public void setTxDeErros(Map<String, Double> txDeErros) {
+    public void setTxDeErros(Map<String, String> txDeErros) {
         this.txDeErros = txDeErros;
     }
 }
