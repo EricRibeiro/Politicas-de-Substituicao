@@ -4,7 +4,6 @@ import arquivo.Entrada;
 import arquivo.Saida;
 import politicas.PoliticaDeSubstituicao;
 import politicas.Processo;
-import politicas.fifo.ProcessoFIFO;
 
 import java.util.*;
 
@@ -50,9 +49,9 @@ public class MFU extends PoliticaDeSubstituicao {
         Integer quadrosPorProcesso = getTamPorAlocIgual();
         Integer tempoDeEntrada = 1;
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            ProcessoMFU procMFU = new ProcessoMFU(p);
-            LinkedList<ProcessoMFU> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            ProcessoMFU procMFU = new ProcessoMFU(processo);
+            LinkedList<ProcessoMFU> filaDePaginas = memoria.get(processo.getProcesso());
 
             if (filaDePaginas.contains(procMFU)) {
                 setQtdDeHits(getQtdDeHits() + 1);
@@ -84,9 +83,9 @@ public class MFU extends PoliticaDeSubstituicao {
         Integer tempoDeEntrada = 1;
         LinkedList<ProcessoMFU> historicoDeEntradas = new LinkedList<>();
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            ProcessoMFU procMFU = new ProcessoMFU(p);
-            LinkedList<ProcessoMFU> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            ProcessoMFU procMFU = new ProcessoMFU(processo);
+            LinkedList<ProcessoMFU> filaDePaginas = memoria.get(processo.getProcesso());
 
             if (historicoDeEntradas.contains(procMFU)) {
                 setQtdDeHits(getQtdDeHits() + 1);
@@ -97,7 +96,7 @@ public class MFU extends PoliticaDeSubstituicao {
 
             } else if (filaDePaginas.size() <= quadrosPorProcesso - 1) {
                 procMFU.setTempoDeEntrada(tempoDeEntrada);
-                procMFU.setLocalNaMemoria(p.getProcesso());
+                procMFU.setLocalNaMemoria(processo.getProcesso());
                 filaDePaginas.add(procMFU);
                 historicoDeEntradas.add(procMFU);
 
@@ -138,9 +137,9 @@ public class MFU extends PoliticaDeSubstituicao {
         criarTabelaAlocProporcional();
         Integer tempoDeEntrada = 1;
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            ProcessoMFU procMFU = new ProcessoMFU(p);
-            LinkedList<ProcessoMFU> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            ProcessoMFU procMFU = new ProcessoMFU(processo);
+            LinkedList<ProcessoMFU> filaDePaginas = memoria.get(processo.getProcesso());
 
             if (filaDePaginas.contains(procMFU)) {
                 setQtdDeHits(getQtdDeHits() + 1);
@@ -149,7 +148,7 @@ public class MFU extends PoliticaDeSubstituicao {
                 procMFU = filaDePaginas.get(indexProc);
                 procMFU.setQtdDeAcessos(procMFU.getQtdDeAcessos() + 1);
 
-            } else if (filaDePaginas.size() == getQtdDeQuadrosProporcional().get(p.getProcesso())) {
+            } else if (filaDePaginas.size() == getQtdDeQuadrosProporcional().get(processo.getProcesso())) {
                 ProcessoMFU proc = Collections.max(filaDePaginas);
                 filaDePaginas.remove(proc);
 
@@ -172,9 +171,9 @@ public class MFU extends PoliticaDeSubstituicao {
         Integer tempoDeEntrada = 1;
         LinkedList<ProcessoMFU> historicoDeEntradas = new LinkedList<>();
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            ProcessoMFU procMFU = new ProcessoMFU(p);
-            LinkedList<ProcessoMFU> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            ProcessoMFU procMFU = new ProcessoMFU(processo);
+            LinkedList<ProcessoMFU> filaDePaginas = memoria.get(processo.getProcesso());
 
             if (historicoDeEntradas.contains(procMFU)) {
                 setQtdDeHits(getQtdDeHits() + 1);
@@ -183,9 +182,9 @@ public class MFU extends PoliticaDeSubstituicao {
                 procMFU = historicoDeEntradas.get(indexProc);
                 procMFU.setQtdDeAcessos(procMFU.getQtdDeAcessos() + 1);
 
-            } else if (filaDePaginas.size() <= getQtdDeQuadrosProporcional().get(p.getProcesso()) - 1) {
+            } else if (filaDePaginas.size() <= getQtdDeQuadrosProporcional().get(processo.getProcesso()) - 1) {
                 procMFU.setTempoDeEntrada(tempoDeEntrada);
-                procMFU.setLocalNaMemoria(p.getProcesso());
+                procMFU.setLocalNaMemoria(processo.getProcesso());
                 filaDePaginas.add(procMFU);
                 historicoDeEntradas.add(procMFU);
 
@@ -207,7 +206,7 @@ public class MFU extends PoliticaDeSubstituicao {
                 while (mapIterator.hasNext() && !adicionado) {
                     Map.Entry<String, LinkedList> m = mapIterator.next();
 
-                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(p.getProcesso())) {
+                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(processo.getProcesso())) {
                         procMFU.setLocalNaMemoria(m.getKey());
                         procMFU.setTempoDeEntrada(tempoDeEntrada);
                         historicoDeEntradas.add(procMFU);

@@ -3,7 +3,7 @@ Processos(páginas):
 P1=6
 P2=5
 P3=6;
-Alocação=Igual
+Alocação=Proporcional
 Substituição=Global
 Sequência:
 P1,1

@@ -36,7 +36,7 @@ public class Arquivo {
             else if (linha.contains("Sequência:"))
                 setLsDeSequencias(reader);
             else {
-                System.out.println("arquivo.Arquivo com formato inválido!");
+                System.out.println("Arquivo com formato inválido!");
                 linha = null;
             }
         }

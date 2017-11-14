@@ -48,19 +48,19 @@ public class MY extends PoliticaDeSubstituicao {
     public void alocIgualSubsLocal() {
         Integer quadrosPorProcesso = getTamPorAlocIgual();
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            LinkedList<Processo> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            LinkedList<Processo> filaDePaginas = memoria.get(processo.getProcesso());
 
-            if (filaDePaginas.contains(p)) {
+            if (filaDePaginas.contains(processo)) {
                 setQtdDeHits(getQtdDeHits() + 1);
 
             } else if (filaDePaginas.size() == quadrosPorProcesso) {
                 int index = getIndexAleatorio(filaDePaginas.size() - 1);
                 filaDePaginas.remove(index);
-                filaDePaginas.add(p);
+                filaDePaginas.add(processo);
 
             } else {
-                filaDePaginas.add(p);
+                filaDePaginas.add(processo);
             }
         }
         setTaxaDeErrosNoArquivo();
@@ -68,65 +68,64 @@ public class MY extends PoliticaDeSubstituicao {
 
     @Override
     public void alocIgualSubsGlobal() {
-//        Integer quadrosPorProcesso = getTamPorAlocIgual();
-//        LinkedList<ProcessoMY> historicoDeEntradas = new LinkedList<>();
-//
-//        for (Processo p : getEntrada().getLsDeSequencias()) {
-//            LinkedList<ProcessoMY> filaDePaginas = memoria.get(p.getProcesso());
-//            p = new ProcessoMY(p);
-//
-//            if (historicoDeEntradas.contains(p)) {
-//                setQtdDeHits(getQtdDeHits() + 1);
-//
-//            } else if (filaDePaginas.size() <= quadrosPorProcesso - 1) {
-//                historicoDeEntradas.add(p);
-//                filaDePaginas.add(p);
-//
-//            } else if (historicoDeEntradas.size() == getEntrada().getQtdDeQuadros()) {
-//                int index = getIndexAleatorio(historicoDeEntradas.size() - 1);
-//                Processo procRemovido = historicoDeEntradas.remove(index);
-//                LinkedList<Processo> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
-//                filaDoProcessoRemovido.remove();
-//
-//                Processo procAdicionado = new Processo(p, procRemovido.getLocalNaMemoria());
-//                historicoDeEntradas.add(procAdicionado);
-//                filaDoProcessoRemovido.add(procAdicionado);
-//
-//            } else {
-//                Boolean adicionado = false;
-//                Iterator<Map.Entry<String, Queue>> mapIterator = memoria.entrySet().iterator();
-//
-//                while (mapIterator.hasNext() && !adicionado) {
-//                    Map.Entry<String, Queue> m = mapIterator.next();
-//                    if (m.getValue().size() < quadrosPorProcesso) {
-//                        Processo procAdicionado = new Processo(p, m.getKey());
-//                        historicoDeEntradas.add(procAdicionado);
-//                        m.getValue().add(procAdicionado);
-//                        adicionado = true;
-//                    }
-//                }
-//            }
-//
-//        }
+        Integer quadrosPorProcesso = getTamPorAlocIgual();
+        LinkedList<Processo> historicoDeEntradas = new LinkedList<>();
+
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            LinkedList<Processo> filaDePaginas = memoria.get(processo.getProcesso());
+
+            if (historicoDeEntradas.contains(processo)) {
+                setQtdDeHits(getQtdDeHits() + 1);
+
+            } else if (filaDePaginas.size() <= quadrosPorProcesso - 1) {
+                historicoDeEntradas.add(processo);
+                filaDePaginas.add(processo);
+
+            } else if (historicoDeEntradas.size() == getEntrada().getQtdDeQuadros()) {
+                int index = getIndexAleatorio(historicoDeEntradas.size() - 1);
+                Processo procRemovido = historicoDeEntradas.remove(index);
+                LinkedList<Processo> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
+                filaDoProcessoRemovido.remove();
+
+                processo.setLocalNaMemoria(procRemovido.getLocalNaMemoria());
+                historicoDeEntradas.add(processo);
+                filaDoProcessoRemovido.add(processo);
+
+            } else {
+                Boolean adicionado = false;
+                Iterator<Map.Entry<String, LinkedList>> mapIterator = memoria.entrySet().iterator();
+
+                while (mapIterator.hasNext() && !adicionado) {
+                    Map.Entry<String, LinkedList> m = mapIterator.next();
+                    if (m.getValue().size() < quadrosPorProcesso) {
+                        processo.setLocalNaMemoria(m.getKey());
+                        historicoDeEntradas.add(processo);
+                        m.getValue().add(processo);
+                        adicionado = true;
+                    }
+                }
+            }
+        }
+        setTaxaDeErrosNoArquivo();
     }
 
     @Override
     public void alocProporcionalSubsLocal() {
         criarTabelaAlocProporcional();
 
-        for (Processo p : getEntrada().getLsDeSequencias()) {
-            LinkedList<Processo> filaDePaginas = memoria.get(p.getProcesso());
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            LinkedList<Processo> filaDePaginas = memoria.get(processo.getProcesso());
 
-            if (filaDePaginas.contains(p)) {
+            if (filaDePaginas.contains(processo)) {
                 setQtdDeHits(getQtdDeHits() + 1);
 
-            } else if (filaDePaginas.size() == getQtdDeQuadrosProporcional().get(p.getProcesso())) {
+            } else if (filaDePaginas.size() == getQtdDeQuadrosProporcional().get(processo.getProcesso())) {
                 int index = getIndexAleatorio(filaDePaginas.size() - 1);
                 filaDePaginas.remove(index);
-                filaDePaginas.add(p);
+                filaDePaginas.add(processo);
 
             } else {
-                filaDePaginas.add(p);
+                filaDePaginas.add(processo);
             }
         }
         setTaxaDeErrosNoArquivo();
@@ -134,7 +133,47 @@ public class MY extends PoliticaDeSubstituicao {
 
     @Override
     public void alocProporcionalSubsGlobal() {
+        criarTabelaAlocProporcional();
 
+        Integer quadrosPorProcesso = getTamPorAlocIgual();
+        LinkedList<Processo> historicoDeEntradas = new LinkedList<>();
+
+        for (Processo processo : getEntrada().getLsDeSequencias()) {
+            LinkedList<Processo> filaDePaginas = memoria.get(processo.getProcesso());
+
+            if (historicoDeEntradas.contains(processo)) {
+                setQtdDeHits(getQtdDeHits() + 1);
+
+            } else if (filaDePaginas.size() <= getQtdDeQuadrosProporcional().get(processo.getProcesso()) - 1) {
+                historicoDeEntradas.add(processo);
+                filaDePaginas.add(processo);
+
+            } else if (historicoDeEntradas.size() == getQtdDeQuadrosProporcional().get("Total")) {
+                int index = getIndexAleatorio(historicoDeEntradas.size() - 1);
+                Processo procRemovido = historicoDeEntradas.remove(index);
+                LinkedList<Processo> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
+                filaDoProcessoRemovido.remove();
+
+                processo.setLocalNaMemoria(procRemovido.getLocalNaMemoria());
+                historicoDeEntradas.add(processo);
+                filaDoProcessoRemovido.add(processo);
+
+            } else {
+                Boolean adicionado = false;
+                Iterator<Map.Entry<String, LinkedList>> mapIterator = memoria.entrySet().iterator();
+
+                while (mapIterator.hasNext() && !adicionado) {
+                    Map.Entry<String, LinkedList> m = mapIterator.next();
+                    if (m.getValue().size() < quadrosPorProcesso) {
+                        processo.setLocalNaMemoria(m.getKey());
+                        historicoDeEntradas.add(processo);
+                        m.getValue().add(processo);
+                        adicionado = true;
+                    }
+                }
+            }
+        }
+        setTaxaDeErrosNoArquivo();
     }
 
     @Override
