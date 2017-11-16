@@ -18,6 +18,14 @@ public class Saida {
         this.txDeErros = new TreeMap<>();
     }
 
+    @Override
+    public String toString() {
+        return "Saida{" +
+                "qtdDeRequisicoes=" + qtdDeRequisicoes +
+                ", txDeErros=" + txDeErros +
+                '}';
+    }
+
     public Integer getQtdDeRequisicoes() {
         return qtdDeRequisicoes;
     }
