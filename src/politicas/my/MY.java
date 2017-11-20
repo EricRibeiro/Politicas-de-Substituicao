@@ -208,6 +208,6 @@ public class MY extends PoliticaDeSubstituicao {
 
         }
 
-        return (index != -1) ? index : 0;
+        return (index == -1) ? 0 : index;
     }
 }
