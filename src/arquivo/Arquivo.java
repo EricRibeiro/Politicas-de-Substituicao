@@ -2,10 +2,7 @@ package arquivo;
 
 import politicas.Processo;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Arquivo {
 
@@ -43,6 +40,15 @@ public class Arquivo {
 
         saida.setQtdDeRequisicoes(entrada.getLsDeSequencias().size());
         reader.close();
+    }
+
+    public void escreverSaida() throws IOException {
+        File file = new File("/home/eric/Coding/Java/Projects/Politicas-de-Substituicao/src/saida.txt");
+        file.createNewFile();
+        FileWriter fw = new FileWriter(file);
+        BufferedWriter writer = new BufferedWriter(fw);
+        fw.write(getSaida().toString());
+        fw.close();
     }
 
     private void setQtdDeQuadros() {

@@ -100,7 +100,7 @@ public class LFU extends PoliticaDeSubstituicao {
                 filaDePaginas.add(procLFU);
                 historicoDeEntradas.add(procLFU);
 
-            } else if (historicoDeEntradas.size() == getEntrada().getQtdDeQuadros()) {
+            } else if (historicoDeEntradas.size() == getTamTotalPorAlocIgual()) {
                 ProcessoLFU proc = Collections.min(historicoDeEntradas);
                 LinkedList<ProcessoLFU> listaDoProcessoRemovido = memoria.get(proc.getLocalNaMemoria());
                 historicoDeEntradas.remove(proc);

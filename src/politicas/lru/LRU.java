@@ -92,7 +92,7 @@ public class LRU extends PoliticaDeSubstituicao {
                 historicoDeEntradas.add(processo);
                 filaDePaginas.add(processo);
 
-            } else if (historicoDeEntradas.size() == getEntrada().getQtdDeQuadros()) {
+            } else if (historicoDeEntradas.size() == getTamTotalPorAlocIgual()) {
                 Processo procRemovido = historicoDeEntradas.remove();
                 LinkedList<Processo> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
                 filaDoProcessoRemovido.remove();

@@ -1,5 +1,6 @@
 package arquivo;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -15,15 +16,23 @@ public class Saida {
 
     public Saida() {
         this.qtdDeRequisicoes = 0;
-        this.txDeErros = new TreeMap<>();
+        this.txDeErros = new LinkedHashMap<>();
     }
 
     @Override
     public String toString() {
-        return "Saida{" +
-                "qtdDeRequisicoes=" + qtdDeRequisicoes +
-                ", txDeErros=" + txDeErros +
-                '}';
+        return "Requisicoes=" + qtdDeRequisicoes + "\n" +
+                "TaxasDeErros:" + "\n" +
+                getTxDeErrosFormatada();
+    }
+
+    public String getTxDeErrosFormatada() {
+      String txDeErros = "";
+
+      for(Map.Entry<String, String> m: this.txDeErros.entrySet())
+            txDeErros += m.getKey() + "=" + m.getValue() + "\n";
+
+      return txDeErros;
     }
 
     public Integer getQtdDeRequisicoes() {

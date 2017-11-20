@@ -49,7 +49,7 @@ public abstract class PoliticaDeSubstituicao {
         Integer qtdDeRequisicoes = getSaida().getQtdDeRequisicoes();
         Integer qtdDeMisses = qtdDeRequisicoes - getQtdDeHits();
         Double txDeErros = (double) qtdDeMisses / (double) qtdDeRequisicoes;
-        String txDeErrosFormatado = new DecimalFormat("#.##").format(txDeErros);
+        String txDeErrosFormatado = new DecimalFormat("#.##").format(txDeErros).replace(".", ",");
         getSaida().getTxDeErros().put(this.getClass().getSimpleName(), txDeErrosFormatado);
     }
 
@@ -62,6 +62,10 @@ public abstract class PoliticaDeSubstituicao {
     public Integer getTamPorAlocIgual() {
         Double a = floor(entrada.getQtdDeQuadros() / entrada.getLsDePaginas().size());
         return a.intValue();
+    }
+
+    public Integer getTamTotalPorAlocIgual() {
+        return entrada.getLsDePaginas().size() * getTamPorAlocIgual();
     }
 
     public void criarTabelaAlocProporcional() {
