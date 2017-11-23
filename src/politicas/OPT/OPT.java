@@ -94,7 +94,7 @@ public class OPT extends PoliticaDeSubstituicao {
                 historicoDeEntradas.add(processo);
                 filaDePaginas.add(processo);
 
-            } else if (historicoDeEntradas.size() == getEntrada().getQtdDeQuadros()) {
+            } else if (historicoDeEntradas.size() == getTamTotalPorAlocIgual()) {
                 Processo procRemovido = getPaginaParaRemocao(historicoDeEntradas);
                 historicoDeEntradas.remove(procRemovido);
                 LinkedList<Processo> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
@@ -181,7 +181,7 @@ public class OPT extends PoliticaDeSubstituicao {
 
                 while (mapIterator.hasNext() && !adicionado) {
                     Map.Entry<String, LinkedList> m = mapIterator.next();
-                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(processo.getProcesso())) {
+                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(m.getKey())) {
                         processo.setLocalNaMemoria(m.getKey());
                         historicoDeEntradas.add(processo);
                         m.getValue().add(processo);

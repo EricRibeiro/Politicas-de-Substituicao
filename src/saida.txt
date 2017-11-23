@@ -1,8 +1,8 @@
-Requisicoes=21
+Requisicoes=20
 TaxasDeErros:
-FIFO=0,86
-OPT=0,67
-LRU=0,81
-LFU=0,67
-MFU=0,86
-MY=0,86
+FIFO=0,85
+OPT=0,7
+LRU=0,8
+LFU=0,75
+MFU=0,85
+MY=0,85
