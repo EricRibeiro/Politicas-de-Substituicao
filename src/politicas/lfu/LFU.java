@@ -206,7 +206,7 @@ public class LFU extends PoliticaDeSubstituicao {
                 while (mapIterator.hasNext() && !adicionado) {
                     Map.Entry<String, LinkedList> m = mapIterator.next();
 
-                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(p.getProcesso())) {
+                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(m.getKey())) {
                         procLFU.setLocalNaMemoria(m.getKey());
                         procLFU.setTempoDeEntrada(tempoDeEntrada);
                         historicoDeEntradas.add(procLFU);

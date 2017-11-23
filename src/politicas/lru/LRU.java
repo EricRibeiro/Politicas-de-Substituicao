@@ -185,7 +185,7 @@ public class LRU extends PoliticaDeSubstituicao {
 
                 while (mapIterator.hasNext() && !adicionado) {
                     Map.Entry<String, LinkedList> m = mapIterator.next();
-                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(processo.getProcesso())) {
+                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(m.getKey())) {
                         processo.setLocalNaMemoria(m.getKey());
                         historicoDeEntradas.add(processo);
                         m.getValue().add(processo);

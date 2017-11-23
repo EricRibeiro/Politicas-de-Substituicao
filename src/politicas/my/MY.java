@@ -172,7 +172,7 @@ public class MY extends PoliticaDeSubstituicao {
 
                 while (mapIterator.hasNext() && !adicionado) {
                     Map.Entry<String, LinkedList> m = mapIterator.next();
-                    if (m.getValue().size() < quadrosPorProcesso) {
+                    if (m.getValue().size() < getQtdDeQuadrosProporcional().get(m.getKey())) {
                         procMY.setLocalNaMemoria(m.getKey());
                         historicoDeEntradas.add(procMY);
                         m.getValue().add(procMY);

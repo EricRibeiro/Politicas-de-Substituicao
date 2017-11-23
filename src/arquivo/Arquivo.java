@@ -16,10 +16,7 @@ public class Arquivo {
     }
 
     public void lerEntrada() throws IOException {
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        File f = new File("/home/eric/Coding/Java/Projects/Politicas-de-Substituicao/src/entrada.txt");
-        FileReader fr = new FileReader(f);
-        BufferedReader reader = new BufferedReader(fr);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         while ((linha = reader.readLine()) != null) {
             if (linha.contains("Tamanho(quadros)="))
