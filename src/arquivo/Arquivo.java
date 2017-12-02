@@ -3,6 +3,8 @@ package arquivo;
 import politicas.Processo;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Arquivo {
 
@@ -40,7 +42,9 @@ public class Arquivo {
     }
 
     public void escreverSaida() throws IOException {
-        File file = new File("/home/eric/Coding/Java/Projects/Politicas-de-Substituicao/src/saida.txt");
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString();
+        File file = new File(path + "/saida.txt");
         file.createNewFile();
         FileWriter fw = new FileWriter(file);
         BufferedWriter writer = new BufferedWriter(fw);

@@ -6,7 +6,6 @@ import politicas.PoliticaDeSubstituicao;
 import politicas.Processo;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class MY extends PoliticaDeSubstituicao {
     private Map<String, LinkedList> memoria;
@@ -57,8 +56,7 @@ public class MY extends PoliticaDeSubstituicao {
                 procMY.setFoiUsado(true);
 
             } else if (filaDePaginas.size() == quadrosPorProcesso) {
-                int index = getIndex(filaDePaginas);
-                filaDePaginas.remove(index);
+                removerElemento(filaDePaginas);
                 filaDePaginas.add(procMY);
 
             } else {
@@ -87,7 +85,9 @@ public class MY extends PoliticaDeSubstituicao {
                 filaDePaginas.add(procMY);
 
             } else if (historicoDeEntradas.size() == getTamTotalPorAlocIgual()) {
-                int index = getIndex(historicoDeEntradas);
+                ProcessoMY p = removerElemento(filaDePaginas);
+                int index = historicoDeEntradas.indexOf(p);
+
                 ProcessoMY procRemovido = historicoDeEntradas.remove(index);
                 LinkedList<ProcessoMY> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
                 filaDoProcessoRemovido.remove();
@@ -126,8 +126,7 @@ public class MY extends PoliticaDeSubstituicao {
                 setQtdDeHits(getQtdDeHits() + 1);
 
             } else if (filaDePaginas.size() == getQtdDeQuadrosProporcional().get(procMY.getProcesso())) {
-                int index = getIndex(filaDePaginas);
-                filaDePaginas.remove(index);
+                removerElemento(filaDePaginas);
                 filaDePaginas.add(procMY);
 
             } else {
@@ -157,8 +156,10 @@ public class MY extends PoliticaDeSubstituicao {
                 filaDePaginas.add(procMY);
 
             } else if (historicoDeEntradas.size() == getQtdDeQuadrosProporcional().get("Total")) {
-                int index = getIndex(filaDePaginas);
-                Processo procRemovido = historicoDeEntradas.remove(index);
+                ProcessoMY p = removerElemento(filaDePaginas);
+                int index = historicoDeEntradas.indexOf(p);
+
+                ProcessoMY procRemovido = historicoDeEntradas.remove(index);
                 LinkedList<Processo> filaDoProcessoRemovido = memoria.get(procRemovido.getLocalNaMemoria());
                 filaDoProcessoRemovido.remove();
 
@@ -184,30 +185,24 @@ public class MY extends PoliticaDeSubstituicao {
         setTaxaDeErrosNoArquivo();
     }
 
-    private int getIndexAleatorio(int limite) {
-        Integer min = 0;
-        return ThreadLocalRandom.current().nextInt(min, limite + 1);
-    }
-
-    private int getIndex(LinkedList<ProcessoMY> filaDePaginas) {
+    private ProcessoMY removerElemento(LinkedList<ProcessoMY> filaDePaginas) {
         ProcessoMY processo = null;
         Boolean encontrado = false;
-        int index = -1;
 
-        for (int i = 0; i < filaDePaginas.size() && !encontrado; i++) {
-            processo = filaDePaginas.get(i);
+        while (!encontrado) {
+            processo = filaDePaginas.getFirst();
 
             if (processo.getFoiUsado()) {
                 processo.setFoiUsado(false);
-                filaDePaginas.remove(processo);
+                filaDePaginas.remove();
                 filaDePaginas.add(processo);
             } else {
+                processo = filaDePaginas.remove();
                 encontrado = true;
-                index = filaDePaginas.indexOf(processo);
             }
 
         }
 
-        return (index == -1) ? 0 : index;
+        return processo;
     }
 }

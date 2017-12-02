@@ -1,4 +1,4 @@
-package politicas.OPT;
+package politicas.opt;
 
 import arquivo.Entrada;
 import arquivo.Saida;

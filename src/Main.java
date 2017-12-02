@@ -1,6 +1,6 @@
 import arquivo.Arquivo;
 import politicas.*;
-import politicas.OPT.OPT;
+import politicas.opt.OPT;
 import politicas.fifo.*;
 import politicas.lfu.LFU;
 import politicas.lru.LRU;
